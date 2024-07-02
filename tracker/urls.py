@@ -11,4 +11,9 @@ urlpatterns = [
         views.update_transaction,
         name="update-transaction",
     ),
+    path(
+        "transactions/<int:pk>/delete/",
+        views.delete_transaction,
+        name="delete-transaction",
+    ),
 ]

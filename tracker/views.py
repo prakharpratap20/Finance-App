@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
 from tracker.models import Transaction
 from tracker.filters import TransactionFilter
 from tracker.forms import TransactionForm
@@ -47,11 +48,7 @@ def create_transaction(request):
             transaction.user = request.user
             transaction.save()
             context = {"message": "Transaction was added successfully!"}
-            return render(
-                request,
-                "tracker/partials/transaction-success.html",
-                context,
-            )
+            return render(request, "tracker/partials/transaction-success.html", context)
         else:
             context = {"form": form}
             response = render(
@@ -73,20 +70,14 @@ def update_transaction(request, pk):
             transaction.user = request.user
             transaction.save()
             context = {"message": "Transaction was updated successfully!"}
-            return render(
-                request,
-                "tracker/partials/transaction-success.html",
-                context,
-            )
+            return render(request, "tracker/partials/transaction-success.html", context)
         else:
             context = {
                 "form": form,
                 "transaction": transaction,
             }
             response = render(
-                request,
-                "tracker/partials/update-transaction.html",
-                context,
+                request, "tracker/partials/update-transaction.html", context
             )
             return retarget(response, "#transaction-block")
 
@@ -94,8 +85,15 @@ def update_transaction(request, pk):
         "form": TransactionForm(instance=transaction),
         "transaction": transaction,
     }
-    return render(
-        request,
-        "tracker/partials/update-transaction.html",
-        context,
-    )
+    return render(request, "tracker/partials/update-transaction.html", context)
+
+
+@login_required
+@require_http_methods(["DELETE"])
+def delete_transaction(request, pk):
+    transaction = get_object_or_404(Transaction, pk=pk, user=request.user)
+    transaction.delete()
+    context = {
+        "message": f"Transaction of {transaction.amount} on {transaction.date} was deleted successfully."
+    }
+    return render(request, "tracker/partials/transaction-success.html", context)
