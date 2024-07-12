@@ -26,7 +26,6 @@ def transactions_list(request):
 
     total_income = transaction_filter.qs.get_total_income()
     total_expenses = transaction_filter.qs.get_total_expenses()
-
     context = {
         "transactions": transaction_page,
         "filter": transaction_filter,
