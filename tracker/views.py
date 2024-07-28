@@ -106,8 +106,9 @@ def delete_transaction(request, pk):
 
 @login_required
 def get_transactions(request):
-    import time
-    time.sleep(1)
+    # simulate a slow connection
+    # import time
+    # time.sleep(1)
     page = request.GET.get("page", 1)
     transaction_filter = TransactionFilter(
         request.GET,
