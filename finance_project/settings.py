@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "django_filters",
     "django_htmx",
     "django.contrib.humanize",
+    "template_partials",
     # project apps
     "tracker",
 ]
@@ -62,6 +63,10 @@ TEMPLATES = [
         "DIRS": [BASE_DIR / "finance_project" / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
+            "loaders": [
+                "django.template.loaders.filesystem.Loader",
+                "django.template.loaders.app_directories.Loader",
+            ],
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
@@ -137,5 +142,5 @@ INTERNAL_IPS = [
 AUTH_USER_MODEL = "tracker.User"
 LOGIN_REDIRECT_URL = "index"
 
-
+# Pagination
 PAGE_SIZE = 10

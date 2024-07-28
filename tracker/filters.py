@@ -1,5 +1,5 @@
 from django import forms
-from django.db.models import query
+# from django.db.models import query
 import django_filters
 from tracker.models import Transaction, Category
 

@@ -21,7 +21,7 @@ def transactions_list(request):
             user=request.user).select_related("category")
     )
     paginator = Paginator(transaction_filter.qs, settings.PAGE_SIZE)
-    # default to 1 when this view is triggered
+    # default to 1 when this view is triggered by a form submission
     transaction_page = paginator.page(1)
 
     total_income = transaction_filter.qs.get_total_income()
@@ -102,3 +102,25 @@ def delete_transaction(request, pk):
         "message": f"Transaction of {transaction.amount} on {transaction.date} was deleted successfully."
     }
     return render(request, "tracker/partials/transaction-success.html", context)
+
+
+@login_required
+def get_transactions(request):
+    import time
+    time.sleep(1)
+    page = request.GET.get("page", 1)
+    transaction_filter = TransactionFilter(
+        request.GET,
+        queryset=Transaction.objects.filter(
+            user=request.user).select_related("category")
+    )
+    paginator = Paginator(transaction_filter.qs, settings.PAGE_SIZE)
+    context = {
+        "transactions": paginator.page(page),
+    }
+
+    return render(
+        request,
+        "tracker/partials/transactions-container.html#transaction_list",
+        context
+    )
