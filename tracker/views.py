@@ -10,11 +10,17 @@ from django_htmx.http import retarget
 
 
 def index(request):
+    """
+    This view is used to render the home page of the application.
+    """
     return render(request, "tracker/index.html")
 
 
 @login_required
 def transactions_list(request):
+    """
+    This view is used to render the list of transactions for the authenticated user.
+    """
     transaction_filter = TransactionFilter(
         request.GET,
         queryset=Transaction.objects.filter(
@@ -46,6 +52,9 @@ def transactions_list(request):
 
 @login_required
 def create_transaction(request):
+    """
+    This view is used to create a new transaction for the authenticated user.
+    """
     if request.method == "POST":
         form = TransactionForm(request.POST)
         if form.is_valid():
@@ -67,6 +76,9 @@ def create_transaction(request):
 
 @login_required
 def update_transaction(request, pk):
+    """
+    This view is used to update an existing transaction for the authenticated user.
+    """
     transaction = get_object_or_404(Transaction, pk=pk, user=request.user)
     if request.method == "POST":
         form = TransactionForm(request.POST, instance=transaction)
@@ -96,6 +108,9 @@ def update_transaction(request, pk):
 @login_required
 @require_http_methods(["DELETE"])
 def delete_transaction(request, pk):
+    """
+    This view is used to delete an existing transaction for the authenticated user.
+    """
     transaction = get_object_or_404(Transaction, pk=pk, user=request.user)
     transaction.delete()
     context = {
@@ -106,6 +121,9 @@ def delete_transaction(request, pk):
 
 @login_required
 def get_transactions(request):
+    """
+    This view is used to fetch transactions for the authenticated user.
+    """
     # simulate a slow connection
     # import time
     # time.sleep(1)
