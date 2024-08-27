@@ -2,6 +2,10 @@ from django.db import models
 
 
 class TransactionQuerySet(models.QuerySet):
+    """
+    Custom queryset for Transaction model to add some custom methods to it.
+    """
+
     def get_expenses(self):
         return self.filter(type="expense")
 
