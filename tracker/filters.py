@@ -5,6 +5,10 @@ from tracker.models import Transaction, Category
 
 
 class TransactionFilter(django_filters.FilterSet):
+    """
+    This class is a filter for the Transaction model.
+    It allows filtering transactions by type, date, and category.
+    """
     transaction_type = django_filters.ChoiceFilter(
         choices=Transaction.TRANSACTION_TYPE_CHOICES,
         field_name="type",
